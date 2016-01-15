@@ -19,10 +19,6 @@ h1 {
   cursor: pointer;
 }
 
-.form-control {
-  cursor: pointer;
-}
-
 .pull-left {
   cursor: pointer;
 }
@@ -131,7 +127,7 @@ nav img {
 
 nav .dropdown-menu {
   float: left;
-  width: 200px;
+  width: 250px;
 }
 
 .dropdown-menu {
