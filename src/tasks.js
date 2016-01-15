@@ -58,8 +58,9 @@ function viewTask(planitId, id) {
       method: 'get'
     })
   ]).then(function(serverData) {
+    var userId = (appvars.user && appvars.user.id) || 0;
     $.ajax({
-      url: '/members/' + serverData[1].planits[0].member_id,
+      url: '/members/' + userId,
       method: 'get'
     }).done(function(members) {
       appvars.planit = serverData[1].planits[0];
@@ -130,7 +131,7 @@ function updateTask(planitId, id) {
 
 function updateTaskPut(event, planitId, id) {
   if (event) event.preventDefault();
-  validatePlanitForm(function() {
+  validateTaskForm(function() {
     var formData = getFormData('form');
     $.ajax({
       url: '/planits/' + planitId + '/tasks/' + id,

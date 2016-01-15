@@ -317,6 +317,9 @@ function viewServiceRecord(id) {
   ]).then(function(serverData) {
     appvars.member = serverData[0].members[0];
     appvars.planits = serverData[1].planits;
+    appvars.planits.forEach(function(planit) {
+      planit.formattedDate = formatDateShort(planit.start_date);
+    });
     data = {
       member: appvars.member,
       planits: appvars.planits,
@@ -539,8 +542,7 @@ function updatePlanit(id) {
       states: appvars.states,
       category: findBy(appvars.planit_types, 'id', planit.planit_type_id).name,
       startDate: formatDateInput(planit.start_date),
-      endDate: formatDateInput(planit.end_date),
-      formattedCurrency: Number(planit.budget).toFixed(2)
+      endDate: formatDateInput(planit.end_date)
     };
     displayTemplate('main', 'planitupdate', data);
   });
@@ -691,7 +693,7 @@ function updateProposal(planitId, taskId, id) {
 
 function updateProposalPut(event, planitId, taskId, id) {
   if (event) event.preventDefault();
-  validatePlanitForm(function() {
+  validateProposalForm(function() {
     var formData = getFormData('form');
     $.ajax({
       url: '/planits/' + planitId + '/tasks/' + taskId + '/proposals/' + id,
@@ -823,8 +825,9 @@ function viewTask(planitId, id) {
       method: 'get'
     })
   ]).then(function(serverData) {
+    var userId = (appvars.user && appvars.user.id) || 0;
     $.ajax({
-      url: '/members/' + serverData[1].planits[0].member_id,
+      url: '/members/' + userId,
       method: 'get'
     }).done(function(members) {
       appvars.planit = serverData[1].planits[0];
@@ -895,7 +898,7 @@ function updateTask(planitId, id) {
 
 function updateTaskPut(event, planitId, id) {
   if (event) event.preventDefault();
-  validatePlanitForm(function() {
+  validateTaskForm(function() {
     var formData = getFormData('form');
     $.ajax({
       url: '/planits/' + planitId + '/tasks/' + id,
@@ -1134,7 +1137,7 @@ function highlightZip() {
 // Validations specifically for tasks form
 
 function highlightHeadCount() {
-  if(parseInt($('.head-count').val()) > 0 && parseInt($('.head-count').val()) < 100 ){
+  if (parseInt($('.head-count').val()) > 0 && parseInt($('.head-count').val()) < 100 ) {
     $('span[class="head-count-error error-text"]').remove();
     $('.head-count').removeClass('error-highlight');
     return true;
@@ -1163,7 +1166,7 @@ function timeErrorOff() {
 function highlightTime() {
   var endTime = Date.parse($('.end-time').val());
   var startTime = Date.parse($('.start-time').val());
-  if (endTime > startTime){
+  if (endTime > startTime) {
     timeErrorOff();
     return true;
   } else {
