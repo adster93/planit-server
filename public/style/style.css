@@ -104,7 +104,6 @@ nav img {
 }
 
 .history-back {
-  margin-left: 20px;
   background-color: #232634;
 }
 
@@ -112,18 +111,14 @@ nav img {
   background-color: orange;
 }
 
-/*.no-history-back:hover {
-  background-color: gray;
-}*/
-
-
-.history-next:hover {
-  background-color: orange;
-
-}
 
 .no-history-next {
   background-color: #232634;
+
+}
+
+.history-next:hover {
+  background-color: orange;
 
 }
 
